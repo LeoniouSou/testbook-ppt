@@ -1,0 +1,67 @@
+{
+  "schema_version": "3.0",
+  "teacher_id": "teacher_hsk1_set_a",
+  "course_id": "new_hsk_course_1",
+  "updated_at": "2026-08-20T00:12:00+08:00",
+  "model_status": "active_lessons_2_to_4_user_waived_lesson_1",
+  "expected_sample_count": 3,
+  "received_sample_count": 3,
+  "missing_samples": [],
+  "waived_samples": [
+    {
+      "lesson": 1,
+      "expected_filename": "HSK1-1.pptx",
+      "status": "waived_by_user",
+      "impact": "Lesson-1-specific pronunciation and opening-course conventions are outside the active model; lessons 5-15 use the stable patterns learned from lessons 2-4."
+    }
+  ],
+  "textbook": {
+    "path": "D:/textbook-ppt/ppt/HSK1教材.pdf",
+    "sha256": "84FDDB0D2A7ECC73E1CDB5392DE24A24706993932A6C165EDA5769E5AC61986E",
+    "pages": 142,
+    "lesson_count": 15,
+    "status": "complete"
+  },
+  "samples": [
+    {
+      "lesson": 2,
+      "path": "D:/textbook-ppt/ppt/HSK1-2.pptx",
+      "sha256": "A7888A08A679EC971CCAADE3D43C009FDAD02950B3F8347FF10A7EE0125AA90A",
+      "slides": 14,
+      "slides_with_notes": 7,
+      "role": ["baseline_visual_skeleton", "compact_lesson_structure"],
+      "confidence": "high"
+    },
+    {
+      "lesson": 3,
+      "path": "D:/textbook-ppt/ppt/HSK1-3.pptx",
+      "sha256": "EF029BCE875D906ACBA79880933DC27182612263C4674EB7ADBF4709DE896C03",
+      "slides": 26,
+      "slides_with_notes": 19,
+      "role": ["teacher_note_structure", "three_session_pacing", "text_scaffolding"],
+      "confidence": "high"
+    },
+    {
+      "lesson": 4,
+      "path": "D:/textbook-ppt/ppt/HSK1-4.pptx",
+      "sha256": "EAF1FA1E5B2FB1A27AEADBF1BEB8FD90228F45F2FDE131E3CA6F191095CFFA32",
+      "slides": 41,
+      "slides_with_notes": 25,
+      "role": ["controlling_reference_for_lesson_5", "priority_language_point_teaching", "practice_progression"],
+      "confidence": "high",
+      "known_source_defects_do_not_copy": [
+        "Cover retains the wrong lesson title; textbook lesson 4 is 我有两个孩子.",
+        "Some number strings and pinyin require textbook-level rechecking.",
+        "Slide 18 contains an irrelevant note copied from lesson 3.",
+        "A 几岁/多大 Chinese-pinyin mismatch appears in the age section.",
+        "At least one 有 is mistyped as yóu."
+      ]
+    }
+  ],
+  "cross_sample_summary": {
+    "total_received_slides": 81,
+    "total_slides_with_notes": 51,
+    "page_size": "16:9",
+    "sample_truth_policy": "Use samples for teacher style and pedagogy; use the textbook and language verification for facts, source text, pinyin, and answers."
+  }
+}

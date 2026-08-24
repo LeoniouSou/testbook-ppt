@@ -1,0 +1,104 @@
+schema_version: "3.0"
+teacher_id: "teacher_hsk1_set_a"
+course_id: "new_hsk_course_1"
+updated_at: "2026-08-20T00:12:00+08:00"
+status: "active_lessons_2_to_4_user_waived_lesson_1"
+
+source_priority:
+  - "教材原文、课次边界与正式教学范围"
+  - "经核验的汉语事实、拼音与答案"
+  - "跨样例稳定的教师视觉与教学模式"
+  - "不改变教师辨识度的教学和版式优化"
+
+visual_system:
+  - id: "visual.inherited_structure"
+    applicability: "stable"
+    confidence: "high"
+    rule: "每份新课件从单一控制性参考PPTX复制源页并编辑，保留master→layout→slide继承、可编辑对象与原字体层级。"
+    evidence: ["L2:S1-S14", "L3:S1-S26", "L4:S1-S41"]
+  - id: "visual.series_identity"
+    applicability: "stable"
+    confidence: "high"
+    rule: "16:9；暖米白底；黑/深灰正文；砖红用于封面底条、重点字与小三角；双语栏目标题下接细灰分隔线；留白大、扁平、克制。"
+    evidence: ["L2:S1,S3,S7,S14", "L3:S1,S4,S8,S26", "L4:S1,S4,S15,S41"]
+  - id: "visual.density"
+    applicability: "conditional"
+    confidence: "high"
+    trigger: "词汇、语法、课文和练习常规教学页"
+    rule: "一页只承担一个清晰教学动作；长内容优先拆页；不用卡片墙、仪表盘、渐变拟物或新的品牌系统。"
+    evidence: ["L3:S5-S17", "L4:S5-S29"]
+  - id: "visual.emphasis"
+    applicability: "conditional"
+    confidence: "high"
+    trigger: "构式拆解、目标语素、答案揭示"
+    rule: "只把关键语素或结构位置标红，其他文本保持黑灰；避免整段着色。"
+    evidence: ["L3:S8-S10,S22", "L4:S20-S22,S34"]
+
+teaching_system:
+  - id: "teaching.lesson_arc"
+    applicability: "stable"
+    confidence: "high"
+    rule: "按复习/情境→生词输入→立即操练→语言点→课文→去支架复现→综合输出推进；内容多时切成三课时。"
+    evidence: ["L3:S4-S25", "L4:S4-S40"]
+  - id: "teaching.vocabulary"
+    applicability: "conditional"
+    confidence: "high"
+    trigger: "新词首次出现"
+    rule: "先用图片、实物、动作或班级真实信息建立意义，再给短例句，随后立刻进行全班→小组→个人口头操练。"
+    evidence: ["L3:S5-S9,S12-S15,S19-S21", "L4:S5-S18,S24-S29,S33-S34"]
+  - id: "teaching.grammar"
+    applicability: "conditional"
+    confidence: "high"
+    trigger: "语法或构式讲解"
+    rule: "先给可理解例句或情境，再拆出目标形式并用板书归纳；用初级汉语和动作解释，避免先讲抽象术语。"
+    evidence: ["L3:S8-S10,S20-S22", "L4:S15-S22,S24-S29"]
+  - id: "teaching.text"
+    applicability: "conditional"
+    confidence: "high"
+    trigger: "课文或对话"
+    rule: "先带拼音输入与朗读，再用理解问题/替换练习处理意义，之后去拼音复现、分角色或按真实信息改编。"
+    evidence: ["L2:S9,S12-S13", "L3:S11,S16-S18,S23-S24", "L4:S30-S32,S37-S38"]
+  - id: "teaching.interaction"
+    applicability: "stable"
+    confidence: "high"
+    rule: "新项目先全班控制练习，再小组/同桌，最后个人挑战或随机展示；速度可逐轮提升。"
+    evidence: ["L3:S4,S14,S18", "L4:S6,S8,S10,S12"]
+  - id: "teaching.scaffold"
+    applicability: "conditional"
+    confidence: "high"
+    trigger: "初次输入、复习和自由输出"
+    rule: "拼音在首次输入保留，在复习和输出阶段逐步撤除；英文只作栏目或必要释义，不替代可理解情境。"
+    evidence: ["L2:S9,S12-S13", "L3:S4,S16-S18,S23-S24", "L4:S30-S32,S37-S38"]
+
+teacher_execution:
+  notes_location: "speaker_notes"
+  notes_style:
+    applicability: "stable"
+    confidence: "high"
+    rule: "每页写可执行提醒：目标/用时、教学顺序、教师话术或动作、学生任务、常见错误/检查、答案或判断标准；封面与过渡页也写简短备注。"
+    evidence: ["L2:7/14 pages with notes", "L3:19/26 pages with notes", "L4:25/41 pages with notes"]
+  answer_policy: "练习答案完整写入备注；仅在控制稿已验证时使用独立静态答案页或点击揭示。"
+  language: "教师提醒以简洁中文为主，允许少量结构标签；学生页保持初级汉语可理解输入。"
+
+conditional_patterns:
+  - id: "conditional.pronunciation_review"
+    confidence: "high"
+    trigger: "前几课仍需巩固声韵调时"
+    rule: "可复用声母/韵母表与四声页；从第5课起只在确有课堂需要时保留，不把它当作每课固定页。"
+    evidence: ["L2:S2,S4", "L3:S2-S3", "L4:S2-S3"]
+  - id: "conditional.rapid_drill"
+    confidence: "high"
+    trigger: "数字、日期、时间等需要自动化的项目"
+    rule: "采用整齐的大字刺激页和逐轮加速的口头反应；动画只有在导入导出后验证timing/trigger才保留。"
+    evidence: ["L4:S5-S12"]
+
+local_exceptions:
+  - "L4连续数字快闪只用于数字/日期/时间等自动化内容，不复制到所有词汇。"
+  - "L4的家庭量词口、年龄问法及人物图片只属于该课内容。"
+  - "L3的国籍名人图片根据实际班级可替换，不作为长期固定素材。"
+  - "样例中的封面残留、旧课备注、错拼音、错答案和中拼不一致一律不继承。"
+
+confidence_limits:
+  lesson_1_waiver: "用户明确取消第1课样例要求；第1课独有的课程开篇和初始语音教学不纳入当前教师模型。"
+  active_scope: [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+  model_basis: "第2-4课共81页，优先参考第4课语言点讲解；教材负责原文、拼音与答案事实核验。"

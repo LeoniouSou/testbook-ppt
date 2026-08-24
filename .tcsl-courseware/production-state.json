@@ -1,0 +1,24 @@
+{
+  "schema_version": "3.0",
+  "teacher_id": "teacher_hsk1_set_a",
+  "course_id": "new_hsk_course_1",
+  "updated_at": "2026-08-20T00:12:00+08:00",
+  "phase": "lesson_5_v3_2_calibrated_lesson_6_in_progress",
+  "model_status": "active_lessons_2_to_4_user_waived_lesson_1",
+  "active_lesson": 6,
+  "control_reference": "D:/textbook-ppt/HSK1-5_教师版V3.2备注优化版.pptx",
+  "completed_work": [
+    "Verified 142-page textbook and 15 lesson boundaries.",
+    "Inspected all 81 slides in lessons 2-4, including notes, layout, fonts, images and editable structure.",
+    "Compared textbook lesson titles and scope against sample decks.",
+    "Identified sample defects that must not propagate.",
+    "Deep-parsed textbook lesson 5 and drafted its teaching beat map.",
+    "Authored and visually verified the 41-slide lesson 5 teacher PPTX.",
+    "Added non-empty speaker notes to all 41 slides and complete exercise answers where applicable.",
+    "Passed overflow and template-fidelity checks.",
+    "Calibrated the continuing-production baseline to the 36-slide lesson 5 V3.2 notes-optimized deck and upgraded the teacher model to courseware contract 3.2."
+  ],
+  "blocking_input": null,
+  "latest_output": "D:/textbook-ppt/HSK1-5_教师版V3.2备注优化版.pptx",
+  "next_action": "Use the frozen lessons 2-4 evidence and lesson 5 V3.2 control template to author and strictly validate lesson 6 without another onboarding round."
+}

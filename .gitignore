@@ -1,0 +1,27 @@
+# Temporary, generated, and dependency files
+/tmp/
+/ppt/
+**/__pycache__/
+*.py[cod]
+node_modules/
+.venv/
+
+# Large source archives and inspection artifacts
+*.rar
+*.zip
+*.inspect.ndjson
+*.pdf
+/CON
+~$*
+
+# PowerPoint files are ignored by default. Keep only current formal deliverables.
+*.pptx
+!HSK1-5_教师版V3.3_主管意见吸收版_40页修订版.pptx
+!HSK1-[6-9]_教师版.pptx
+!HSK1-1[0-5]_教师版.pptx
+
+# Common OS/editor noise
+.DS_Store
+Thumbs.db
+*.tmp
+*.bak

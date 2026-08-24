@@ -1,0 +1,12 @@
+schema_version: "3.0"
+teacher_id: "teacher_hsk1_set_a"
+course_id: "new_hsk_course_1"
+updated_at: "2026-08-19T23:31:05+08:00"
+accepted_teacher_edits: []
+candidate_preferences: []
+promoted_preferences: []
+explicit_long_term_rules:
+  - "保留老师明显风格，同时允许优化教学设计和版式。"
+  - "交付教师版PPTX、逐页备注和答案。"
+  - "教师反馈通过直接修改PPTX返回。"
+promotion_rule: "同类偏好在两个独立修改实例中重复出现，或老师明确说以后都这样，才升级为长期规则。"

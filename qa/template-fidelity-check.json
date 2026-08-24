@@ -1,0 +1,13 @@
+{
+  "status": "pass",
+  "checkedAt": "2026-08-19T16:10:54.945Z",
+  "workspace": "D:\\textbook-ppt",
+  "finalPptx": "D:\\textbook-ppt\\tmp\\hsk1_onboarding\\lesson5\\HSK1-5-final-candidate.pptx",
+  "starterPptx": "D:\\textbook-ppt\\tmp\\hsk1_onboarding\\lesson5\\template-starter.pptx",
+  "mapPath": "D:\\textbook-ppt\\tmp\\hsk1_onboarding\\lesson5\\template-frame-map.json",
+  "starterLayoutDir": "D:\\textbook-ppt\\tmp\\hsk1_onboarding\\lesson5\\template-starter-layout",
+  "finalLayoutDir": "D:\\textbook-ppt\\tmp\\hsk1_onboarding\\lesson5\\final-inspect\\layouts",
+  "editDir": "D:\\textbook-ppt\\tmp\\hsk1_onboarding\\lesson5",
+  "issueCount": 0,
+  "issues": []
+}
