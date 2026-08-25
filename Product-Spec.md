@@ -1,5 +1,7 @@
 # 产品需求规范：TCSL 课件生产系统 · 工程化改造（testbook-ppt）
 
+> **版本：** v1.1　**更新日期：** 2026-08-25　**变更记录：** 见 `Product-Spec-CHANGELOG.md`
+
 ## 0. AI 使用说明
 
 - 本文档是本次改造的功能、范围、行为和验收标准的事实来源。
@@ -156,16 +158,27 @@
 
 **优先级：** P0　**关联：** TASK-001 / FLOW-001
 
-**行为：** ledger 中第 6–15 课状态由 `queued` 改为反映事实的终态；`production-state.json` 的 phase/active_lesson 同步。
+**行为：** ledger 中第 6–15 课状态由 `queued` 改为反映事实的状态；第 5 课登记项由已被取代的 V3.2 36 页版更正为 V3.3 40 页定稿；`production-state.json` 的 phase/active_lesson 同步。
+
+**状态字段约定（与 SKILL §6 枚举对齐）：** SKILL §6 已定义 `lesson_status` 枚举为 `queued / drafting / review / accepted / final`，其中**不含** `awaiting_teacher_review`。为同时满足本 Spec 的"状态反映事实"与 NFR"SKILL 净增量最小"，本版**不扩展该枚举**，改为三字段分工：
+
+| 字段 | 取值 | 含义 |
+|---|---|---|
+| `lesson_status` | SKILL §6 既有枚举 | 冷启动判断下一待产课次的唯一依据（FLOW-001 步骤 3） |
+| `machine_gate` | `pass` / `fail` / `not_run` | 机器门禁结果 |
+| `human_review` | `awaiting_teacher_review` / `teacher_accepted` / `supervisor_confirmed` / `none` | 人工签核细分状态 |
 
 **规则：**
-- MUST 将第 6–15 课标为 `awaiting_teacher_review`（机器门禁通过但老师未审），不得标 `final`；
-- MUST 记录每课最终文件名、页数、SHA-256，与 PROGRESS 文档及实际文件三方一致；
-- SHOULD 在 ledger 增加 `machine_gate` 与 `human_review` 两个独立字段，避免再次混同。
+- MUST 将第 6–15 课的 `lesson_status` 由 `queued` 改为 `review`（机器门禁已过、等待老师审阅），不得标 `final`，不得留在 `queued`；
+- MUST 在 ledger 增加 `machine_gate` 与 `human_review` 两个独立字段承载细分语义（本版由 SHOULD 升为 MUST：既然不扩展枚举，细分语义没有别的落点）；
+- MUST 记录每课最终文件名、页数、SHA-256，与 PROGRESS 文档及实际文件三方一致；第 5 课既有的 `output` / `sha256` / `slides` 三个字段指向 V3.2 36 页版，MUST 覆盖为 V3.3 40 页定稿；
+- MUST 把 ledger 中现存的枚举外取值（`completed_by_teacher`、`outside_active_model`、`completed_v3_2`）一并归一到 SKILL §6 枚举，原始语义转记到 `human_review`；
+- MUST NOT 在 SKILL §6 中新增枚举值；SKILL 侧只允许加一句指向 ledger 双字段的说明。
 
 **验收标准：**
 - [ ] AC-001: Given 回写完成, when 对比 ledger、PROGRESS.md、`sha256sum` 实测值, then 三者完全一致。
 - [ ] AC-002: Given 新 session 冷启动, when 询问"下一步做什么", then 回答是"等待老师审阅第 6–15 课 / 可接 HSK2"而非"生产第 6 课"。
+- [ ] AC-003: Given 回写完成, when 读取 ledger 全部 15 条课次记录, then 每条 `lesson_status` 取值均落在 SKILL §6 枚举内，且第 6–15 课的 `human_review` 均为 `awaiting_teacher_review`。
 
 ### REQ-003: 交付门禁——状态回写为必要条件
 
@@ -175,10 +188,13 @@
 
 **规则：**
 - MUST 写入 SKILL.md，成为与来源/教学/视觉门槛并列的第四组二元门槛；
-- MUST NOT 依赖 Agent 自觉——门槛缺一即判定该课未完成。
+- MUST NOT 依赖 Agent 自觉——门槛缺一即判定该课未完成；
+- MUST 在门禁生效的同时具备可用的 QA 摘要写入手段。REQ-008 的完整生成器为 P2，但其**最小子集**（最终 SHA-256、页数、备注数、各组门槛结果、`evidence_level`）随本需求一起落地为 P0，避免 P0 门禁依赖 P2 能力；
+- 门禁自写入 SKILL.md 起即时生效，不设过渡期。生效期间若因 REQ-004 暂停成品交付，本门禁不产生额外阻塞；一旦通过豁免通道恢复交付，最小摘要能力必须已经可用。
 
 **验收标准：**
 - [ ] AC-001: Given SKILL.md 修订后, when 检索 §13, then 存在"状态与账本门槛"且含上述三项。
+- [ ] AC-002: Given 门禁生效后任一课次被报告为交付完成, when 检查该课, then ledger 回写、production-state 更新、QA 摘要文件三者均存在，且摘要可由仓库内脚本重新生成并与实测 SHA 一致。
 
 ### REQ-004: 滚动放量硬约束
 
@@ -188,12 +204,17 @@
 
 **行为：** SKILL.md §8 的滚动放量从建议升级为门禁：ledger 中处于 `awaiting_teacher_review` 且未获任何回应的课次数达到当前批次上限时，暂停生产后续新课，转入可重算草稿准备（不停解析，只停成品交付）。
 
+**`accepted` 的判定口径：** 沿用 SKILL §6 定义——`accepted` 仅指**老师**的签核动作（老师回复"继续"，或老师返回修改稿）。教学主管确认、内部独立终验、机器严格门禁 PASS 均**不**计入 `accepted`。第 5 课现有记录为教学主管最终确认（PROGRESS 2026-08-22），因此在本口径下记为 `lesson_status = review` + `human_review = supervisor_confirmed`，**不计入阶梯计数**；当前 `accepted_count = 0`，阶梯处于第 1 级、批次上限 = 1。
+
 **规则：**
-- MUST 批次上限沿用既有阶梯（1→2→4→6–8），当前阶梯由 ledger 中已 accepted 课次数决定；
-- SHOULD 允许所有者显式书面豁免单次批产，豁免记录进 ledger。
+- MUST 批次上限沿用既有阶梯（1→2→4→6–8），当前阶梯由 ledger 中 `human_review = teacher_accepted` 的课次数决定；
+- MUST 把门禁判定所需状态显式落到 ledger，不依赖运行时推算：新增 `batch_state` 对象（`ladder_step`、`cap`、`accepted_count`、`awaiting_count`、`updated_at`）与 `exemptions` 数组（`granted_by`、`granted_at`、`scope`、`reason`）；
+- MUST 把"未获任何回应"定义为可判定条件：该课 `human_review = awaiting_teacher_review` 且 ledger 中无该课的老师反馈记录；
+- MUST 允许所有者显式书面豁免单次批产，豁免写入 `exemptions`（本版由 SHOULD 升为 MUST：没有豁免通道时门禁无法解除，会把生产线永久锁死）。
 
 **验收标准：**
 - [ ] AC-001: Given 10 课待审 0 课 accepted, when Agent 计划生产第 16 课成品, then 门禁阻止并提示等待审阅或申请豁免。
+- [ ] AC-002: Given 回写后的 ledger, when 读取 `batch_state`, then `accepted_count = 0`、`ladder_step = 1`、`cap = 1`、`awaiting_count = 10`。
 
 ### REQ-005: 多教材/多老师目录结构
 
@@ -263,10 +284,15 @@ archive/                      # 历史版本与归档状态
 
 **优先级：** P2　**关联：** TASK-005
 
-**行为：** 交付 PPTX 改用 Git LFS 追踪（或改为 tag + Release 附件，二选一）；确立"每课定稿一个 commit + tag（如 `hsk1-L6-final`）"规范写入 SKILL.md；新交付物文件名去掉版本尾缀（版本由 ledger SHA + git tag 承担），既有文件名不追溯改名。
+**行为：** 交付 PPTX 改用 Git LFS 追踪（Q-002 已定案：选 Git LFS，不选 tag+Release）；确立"每课定稿一个 commit + tag（如 `hsk1-L6-final`）"规范写入 SKILL.md；新交付物文件名去掉版本尾缀（版本由 ledger SHA + git tag 承担），既有文件名不追溯改名。
+
+**规则：**
+- MUST 只对迁移后的 `courses/*/deliverables/*.pptx` 启用 LFS 追踪；MUST NOT 用 `git lfs migrate` 重写既有历史（会改写 commit SHA、废掉所有既有克隆）。既有 11 份 PPTX 保持普通 git 对象，普通对象与 LFS 对象混合的状态可接受；
+- MUST 把 Git LFS 登记进 REQ-007 的 `DEPENDENCIES.md`，并标注为 Windows/Linux 双平台前置——云端 Agent 环境默认未安装 LFS（2026-08-25 实测：`git: 'lfs' is not a git command`）。
 
 **验收标准：**
 - [ ] AC-001: Given 规范生效后的下一次定稿, when 查看 git 历史, then 该课有独立 commit 与 tag，且 ledger SHA 可在该 commit 复验。
+- [ ] AC-002: Given LFS 启用后, when 检查既有 11 份 PPTX 的 blob, then 仍为普通 git 对象，git 历史的 commit SHA 未被改写。
 
 ### REQ-010: 进化 hook 课件语境豁免
 
@@ -274,15 +300,26 @@ archive/                      # 历史版本与归档状态
 
 **用途：** "P12：把这个例句换掉"类正常修订指令不应进入进化信号队列。
 
-**行为：** `detect-feedback-signal.sh` 增加豁免：消息匹配课件修订特征（页码引用 `P\d+`、课次引用、或当前 session 处于课件生产上下文标记）时不入队；豁免逻辑不影响编程项目场景。
+**行为：** `detect-feedback-signal.sh` 增加豁免：消息匹配课件修订特征时不入队；豁免逻辑不影响编程项目场景。三条触发分支全部必须实现：
+
+| 分支 | 判定方式 |
+|---|---|
+| 页码引用 | 消息匹配 `P\d+` 或 `第\d+页` |
+| 课次引用 | 消息匹配 `第\d+课` 或 `L\d+` |
+| 课件生产上下文 | 仓库内存在 `courses/<course_id>/state/production-state.json` 且其 `phase` 不是终态。hook 为 UserPromptSubmit，只能读 stdin 的 `.prompt`，拿不到 session 内存，故语境标记 MUST 落成仓库内可读文件 |
 
 **规则：**
 - MUST 保持原 hook 在非课件语境的行为不变；
+- MUST 三条分支各自具备独立的黑盒测试用例；
 - SHOULD 宁可漏抓由主 Agent 补记（既有机制），不可误抓污染队列。
 
 **验收标准：**
-- [ ] AC-001: Given 输入"P12：把这个例句换掉", when hook 执行, then signals.jsonl 不新增记录。
-- [ ] AC-002: Given 输入"你又搞错了，我说过规则要写进 SKILL", when hook 执行, then 正常入队。
+> 说明：v1.0 使用的样本"P12：把这个例句换掉"在现有正则下**本来就不会入队**（词表含 `去掉/删掉/改成/换成`，不含 `换掉`），属于空测，不能证明豁免生效。本版换成现状下确实会误入队的样本。
+
+- [ ] AC-001: Given 输入"P8：这一页的图换成清晰的"（现状会误入队）, when hook 执行, then signals.jsonl 不新增记录。
+- [ ] AC-002: Given 输入"第9课第7页的学生指令改成口语一点"（现状会误入队）, when hook 执行, then signals.jsonl 不新增记录。
+- [ ] AC-003: Given 输入"你又搞错了，我说过规则要写进 SKILL", when hook 执行, then 正常入队。
+- [ ] AC-004: Given production-state.json 的 phase 为终态或该文件不存在, when 输入一条含 `P8` 的编程类修正消息, then 语境分支不生效，按原规则正常入队。
 
 ---
 
@@ -294,7 +331,8 @@ archive/                      # 历史版本与归档状态
 |---|---|---|
 | Course | 一本教材的整册生产单元 | course_id、textbook SHA、lesson_count |
 | Teacher Model | 一位老师×一套教材的风格模型 | teacher_id、contract_version、stable/conditional 规则 |
-| Lesson | 单课生产记录（ledger 条目） | lesson、machine_gate、human_review、final SHA、页数 |
+| Lesson | 单课生产记录（ledger 条目） | lesson、lesson_status（SKILL §6 枚举）、machine_gate、human_review、final SHA、页数 |
+| Batch State | 滚动放量门禁的判定状态（ledger 内） | ladder_step、cap、accepted_count、awaiting_count、exemptions[] |
 | Deliverable | 定稿 PPTX | 文件、SHA-256、对应 tag |
 | QA Summary | 单课验收证据摘要 | 绑定 SHA、各门槛结果、evidence_level |
 | Inputs Manifest | 外部输入登记 | 逻辑名、相对路径、SHA、来源说明 |
@@ -311,6 +349,7 @@ archive/                      # 历史版本与归档状态
 
 - 状态创建/更新只发生在 `.tcsl-courseware/`（迁移后为 `courses/<id>/state/`）唯一根下；
 - 任何交付物 SHA 变更 MUST 级联更新 ledger 与 QA 摘要；
+- `lesson_status` 取值 MUST 限定在 SKILL §6 枚举内，人工签核细分一律走 `human_review`（REQ-002）；
 - 归档只移动不删除；旧版本可回退（沿用 SKILL §11.7）；
 - 老师样例与教材本体永不入库，只入 manifest。
 
@@ -323,7 +362,7 @@ archive/                      # 历史版本与归档状态
 | DEP-001 | Presentations skill | PPTX 读写、模板跟随、渲染质检 | Yes | 版本待登记（REQ-007） |
 | DEP-002 | 教材 PDF（HSK1 等） | 事实源 | Yes | 不入库，manifest 校验 |
 | DEP-003 | 老师样例 PPTX | 风格建模证据 | Yes | 同上 |
-| DEP-004 | Git LFS | 交付物版本管理 | No | REQ-009 二选一方案之一 |
+| DEP-004 | Git LFS | 交付物版本管理 | Yes | Q-002 已定案选用；云端环境默认未装，安装方式登记于 DEPENDENCIES.md |
 | DEP-005 | jq / Python 3 | 校验与摘要脚本 | Yes | 双平台（Windows/Linux）可用 |
 
 ---
@@ -357,16 +396,16 @@ archive/                      # 历史版本与归档状态
 
 | 编号 | 假设 | 假设依据 | 错误风险 |
 |---|---|---|---|
-| ASM-001 | `.courseware/teacher-hsk1/teacher-model.json`（contract 3.2，绑定 V3.3 模板）是较新的有效状态，`.tcsl-courseware/` 为过时残留 | 其绑定的 V3.3 模板与 PROGRESS.md 8-22 记录吻合 | 若相反，合并方向反转；三方核对（REQ-001）可兜住 |
-| ASM-002 | 第 6–15 课老师均未实际审阅 | ledger 无 accepted 记录，PROGRESS 只提主管确认第 5 课 | 若部分已审，回写状态时改为 accepted 即可 |
+| ASM-001 | `.courseware/teacher-hsk1/teacher-model.json`（contract 3.2，绑定 V3.3 模板）是较新的有效状态，`.tcsl-courseware/` 为过时残留 | 其绑定的 V3.3 模板与 PROGRESS.md 8-22 记录吻合 | **已核实（2026-08-25）**：该文件 `production_baseline.sha256 = 8f2580a4…` 与 PROGRESS 头部 V3.3 40 页控制模板 SHA 一致，假设成立，合并方向不反转 |
+| ASM-002 | 第 6–15 课老师均未实际审阅 | ledger 无 accepted 记录，PROGRESS 只提主管确认第 5 课 | **已核实（2026-08-25）**：ledger 全库无 `accepted` 取值，`accepted_count = 0`；若后续部分已审，改该课 `human_review = teacher_accepted` 并重算 `batch_state` 即可 |
 | ASM-003 | 生产暂在原 Windows 机器继续，云端/他机为增量目标 | 所有者选择"跨机器可重现 + 扩展"，未说迁移 | 无重大风险，脚本双平台已覆盖 |
 
 ### 10.2 待确认问题
 
 | 编号 | 问题 | 是否阻塞 | 备注 |
 |---|---|---:|---|
-| Q-001 | 统一 teacher_id 用 `teacher_hsk1_set_a` 还是 `teacher-hsk1`？ | No | 建议前者（信息量更大），REQ-001 执行时二选一 |
-| Q-002 | REQ-009 选 Git LFS 还是 tag+Release？ | No | 仓库将长期 Private 且单机生产，倾向 LFS |
+| Q-001 | 统一 teacher_id 用 `teacher_hsk1_set_a` 还是 `teacher-hsk1`？ | No | **已定案（2026-08-25）**：用 `teacher_hsk1_set_a`。`.tcsl-courseware/` 三份状态文件已用该值，仅 `.courseware/teacher-hsk1/teacher-model.json` 用 `teacher-hsk1`，按信息量与改动量取前者 |
+| Q-002 | REQ-009 选 Git LFS 还是 tag+Release？ | No | **已定案（2026-08-25）**：选 Git LFS，只追踪迁移后的新路径、不重写历史。理由见 REQ-009 规则 |
 | Q-003 | HSK2 教材与样例是否已到位？ | No | 只影响 FLOW-004 演练能否用真数据 |
 
 ---
