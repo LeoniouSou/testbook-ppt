@@ -14,7 +14,7 @@
 
 | Phase | 内容 | 优先级 | 依赖 | 状态 |
 |---:|---|---|---|---|
-| 1 | 状态三方核对与合并 | P0 | — | [~] 归档与迁移已完成，待确认删除旧目录 |
+| 1 | 状态三方核对与合并 | P0 | — | [x] 已完成 2026-08-25 |
 | 2 | 状态回写至事实 | P0 | 1 | [ ] |
 | 3 | SKILL 门禁增补 + 最小 QA 摘要 | P0 | 2 | [ ] |
 | 4 | 目录重构 | P1 | 2 | [ ] |
@@ -35,7 +35,7 @@
 - [x] 产出三方核对报告：`.tcsl-courseware/` × `.courseware/teacher-hsk1/` × 实际 PPTX（页数、SHA-256）逐项对照，差异逐条列出并解释；
 - [x] 按 ASM-001 合并（teacher-model.json 3.2 为新、ledger 事实以实物为准），全库 `teacher_id` 统一为 `teacher_hsk1_set_a`；
 - [x] 将 `teacher-model.json` 迁入唯一状态根 `.tcsl-courseware/`；
-- [~] 归档 `.courseware/` 整目录至 `archive/2026-08-state-merge/` 后删除原目录（需所有者确认，Spec §11.1）。**归档已完成，删除待所有者确认。**
+- [x] 归档 `.courseware/` 整目录至 `archive/2026-08-state-merge/` 后删除原目录（需所有者确认，Spec §11.1）。删除前已 `diff -r` 校验归档副本逐字节一致。
 
 **关键文件**：
 - `archive/2026-08-state-merge/state-reconciliation-report.md` — 三方核对报告，合并的证据基础
@@ -43,7 +43,7 @@
 - `archive/2026-08-state-merge/` — 旧状态归档
 
 **验收标准**：
-- [ ] 全库检索 `.courseware/`，除归档与文档正文引用（Product-Spec.md / DEV-PLAN.md / CHANGELOG）外 0 命中；
+- [x] 全库检索 `.courseware/`，除归档与文档正文引用（Product-Spec.md / DEV-PLAN.md / CHANGELOG）外 0 命中；
 - [x] 任一状态文件的 teacher_id/course_id/schema_version 全库一致（Spec REQ-001 AC-002）；
 - [x] 核对报告中每条差异都有解释或标记为待确认，无未解释差异被静默合并（10 条差异逐条有归属）。
 
