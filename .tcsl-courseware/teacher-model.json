@@ -1,0 +1,496 @@
+{
+  "schema_version": "3.0",
+  "teacher_id": "teacher_hsk1_set_a",
+  "course_id": "new_hsk_course_1",
+  "model_version": 3,
+  "courseware_contract_version": "3.2",
+  "textbook_series": "新HSK教程1",
+  "control_template": "D:\\textbook-ppt\\HSK1-5_教师版V3.3_主管意见吸收版_40页修订版.pptx",
+  "sources": [
+    {
+      "path": "D:\\textbook-ppt\\ppt\\HSK1-2.pptx",
+      "sha256": "a7888a08a679ec971ccaade3d43c009fdad02950b3f8347ff10a7ee0125aa90a",
+      "lesson": 2,
+      "weight": 1.0,
+      "role": "supporting-evidence"
+    },
+    {
+      "path": "D:\\textbook-ppt\\ppt\\HSK1-3.pptx",
+      "sha256": "ef029bce875d906acba79880933dc27182612263c4674eb7adbf4709de896c03",
+      "lesson": 3,
+      "weight": 1.0,
+      "role": "supporting-evidence"
+    },
+    {
+      "path": "D:\\textbook-ppt\\ppt\\HSK1-4.pptx",
+      "sha256": "eaf1fa1e5b2fb1a27aeadbf1beb8fd90228f45f2fde131e3ca6f191095cffa32",
+      "lesson": 4,
+      "weight": 1.5,
+      "role": "primary-pedagogy-and-language-point-evidence"
+    },
+    {
+      "path": "D:\\textbook-ppt\\HSK1-5_教师版V3.3_主管意见吸收版_40页修订版.pptx",
+      "sha256": "8f2580a4e80a39149a4d7e57c4617a3194d4a433a017e0ba17bc0db679f5a95c",
+      "lesson": 5,
+      "weight": 2.0,
+      "role": "control-template-and-supervisor-confirmed-v3.3-production-baseline"
+    }
+  ],
+  "stable_rules": [
+    {
+      "id": "warm-cream-canvas",
+      "rule": "全课使用暖米白底、黑色正文和砖红重点色。",
+      "source_evidence": [
+        {
+          "lesson": 2
+        },
+        {
+          "lesson": 3
+        },
+        {
+          "lesson": 4
+        }
+      ],
+      "confidence": 1.0
+    },
+    {
+      "id": "bilingual-section-title",
+      "rule": "常规内容页采用左上中文+英文栏目标题及黑色下划线。",
+      "source_evidence": [
+        {
+          "lesson": 2
+        },
+        {
+          "lesson": 3
+        },
+        {
+          "lesson": 4
+        }
+      ],
+      "confidence": 0.96
+    },
+    {
+      "id": "image-led-input",
+      "rule": "新词、课文和输出页以一张主图或两张对照图承担语义。",
+      "source_evidence": [
+        {
+          "lesson": 3
+        },
+        {
+          "lesson": 4
+        }
+      ],
+      "confidence": 0.94
+    },
+    {
+      "id": "pinyin-fading",
+      "rule": "首次输入保留拼音，识别、复述、真实输出和出口条逐步撤除。",
+      "source_evidence": [
+        {
+          "lesson": 3
+        },
+        {
+          "lesson": 4
+        }
+      ],
+      "confidence": 0.9
+    },
+    {
+      "id": "one-teaching-job-per-slide",
+      "rule": "词汇输入与整句操练属于不同教学任务时必须拆页，不把两个教学焦点挤在同一页。",
+      "source_evidence": [
+        {
+          "lesson": 5,
+          "slides": [
+            4,
+            5
+          ],
+          "version_sha256": "8f2580a4e80a39149a4d7e57c4617a3194d4a433a017e0ba17bc0db679f5a95c"
+        }
+      ],
+      "confidence": 1.0
+    },
+    {
+      "id": "plain-student-instruction",
+      "rule": "学生指令使用可直接执行的课堂语言，不向初级学生暴露“意群”等教师术语。",
+      "source_evidence": [
+        {
+          "lesson": 5,
+          "slide": 5,
+          "version_sha256": "8f2580a4e80a39149a4d7e57c4617a3194d4a433a017e0ba17bc0db679f5a95c"
+        }
+      ],
+      "confidence": 1.0
+    },
+    {
+      "id": "supervisor-supervised-feedback-loop",
+      "rule": "课件生产使用主管监督式自反馈：大模型负责提炼反馈、识别复现问题和发现新旧规则冲突；候选长期规则必须经主管确认后才能用于后续课程，冲突必须由主管裁决，最终检查与定稿权属于主管。",
+      "source_evidence": [
+        {
+          "type": "supervisor-confirmation",
+          "date": "2026-08-25",
+          "scope": "series-production-workflow"
+        }
+      ],
+      "confidence": 1.0
+    }
+  ],
+  "visual": {
+    "canvas_ratio": "16:9",
+    "canvas_px": {
+      "width": 1280,
+      "height": 720
+    },
+    "palette": {
+      "background": "#FFF9F0",
+      "primary": "#BF5449",
+      "primary_dark": "#923C34",
+      "primary_light": "#DB8461",
+      "text": "#17130F",
+      "muted": "#6B7280",
+      "rule": "#E9E1D7"
+    },
+    "fonts": {
+      "teacher_chinese": "超清极简护眼楷",
+      "portable_chinese": "KaiTi",
+      "pinyin": "Arial",
+      "fallback_chinese": "Microsoft YaHei"
+    },
+    "font_sizes_px": {
+      "cover": [
+        38,
+        58
+      ],
+      "section_title": 48,
+      "hanzi": [
+        32,
+        46
+      ],
+      "body": [
+        26,
+        36
+      ],
+      "pinyin": [
+        19,
+        25
+      ],
+      "label": [
+        17,
+        23
+      ]
+    },
+    "safe_area_px": {
+      "left": 58,
+      "top": 118,
+      "right": 1222,
+      "bottom": 664
+    },
+    "image_policy": "crop-or-contain-with-locked-aspect-ratio; never stretch",
+    "alignment_policy": "separate pinyin and hanzi text boxes; never align with repeated spaces"
+  },
+  "pedagogy": {
+    "lesson_duration": "3x45min",
+    "session_target_min": 45,
+    "sequence": [
+      "objective",
+      "input",
+      "comprehension",
+      "controlled-practice",
+      "guided-output",
+      "authentic-use",
+      "exit-ticket"
+    ],
+    "text_routine": [
+      "prediction",
+      "teacher-reading-or-audio",
+      "comprehension-check",
+      "pinyin-supported-reading",
+      "role-play",
+      "pinyin-removed-retrieval"
+    ],
+    "audio_fallback": "teacher-reading",
+    "visible_student_instruction_required": true,
+    "every_session_requires_exit_ticket": true,
+    "permitted_optimizations": [
+      "split-overloaded-slide",
+      "replace-scatter-with-structured-grid",
+      "fix-crop-and-aspect-ratio",
+      "remove-redundant-repeated-image",
+      "clarify-student-instruction"
+    ]
+  },
+  "notes": {
+    "required_fields": [
+      "课时定位",
+      "本页目标",
+      "建议用时",
+      "教学顺序",
+      "教师动作/话术",
+      "学生任务",
+      "常见问题",
+      "答案/检查标准",
+      "教材来源"
+    ],
+    "ordinary_max_chars": 300,
+    "listening_max_chars": 650,
+    "tone": "concise-actionable",
+    "answer_visibility": "notes-unless-explicit-answer-check-page",
+    "audience_separation": "per-visible-text-segment",
+    "listening_contract": "complete-script-two-passes-explicit-pauses",
+    "internal_build_language": "forbidden",
+    "answer_format": "exact-answer-evidence-accepted-variants-or-performance-criterion",
+    "detail_level": "quick-scan"
+  },
+  "archetypes": [
+    {
+      "id": "cover-exit",
+      "use_when": "课程封面或每课时出口检查",
+      "source_evidence": [
+        {
+          "lesson": 4,
+          "slides": [
+            1,
+            41
+          ]
+        }
+      ],
+      "capacity": {
+        "max_items": 3,
+        "max_lines_per_item": 1
+      },
+      "required_slots": [
+        "lesson-title",
+        "learner-goals",
+        "student-instruction"
+      ],
+      "overflow_action": "move-practice-to-image-output-slide"
+    },
+    {
+      "id": "review-task",
+      "use_when": "激活旧知、两人任务或短流程说明",
+      "source_evidence": [
+        {
+          "lesson": 4,
+          "slides": [
+            4
+          ]
+        }
+      ],
+      "capacity": {
+        "max_items": 5,
+        "max_lines_per_item": 1
+      },
+      "required_slots": [
+        "task-title",
+        "student-instruction",
+        "task-items"
+      ],
+      "overflow_action": "split-slide"
+    },
+    {
+      "id": "visual-vocabulary",
+      "use_when": "一至八个短词的图像化输入",
+      "source_evidence": [
+        {
+          "lesson": 4,
+          "slides": [
+            13,
+            16,
+            19
+          ]
+        }
+      ],
+      "capacity": {
+        "max_items": 8,
+        "max_hanzi_per_item": 6
+      },
+      "required_slots": [
+        "word-images",
+        "hanzi",
+        "pinyin",
+        "micro-check"
+      ],
+      "overflow_action": "group-by-semantic-theme"
+    },
+    {
+      "id": "grammar-induction",
+      "use_when": "从两例到三层结构的语法归纳",
+      "source_evidence": [
+        {
+          "lesson": 4,
+          "slides": [
+            20,
+            22,
+            25
+          ]
+        }
+      ],
+      "capacity": {
+        "max_examples": 3,
+        "max_formula_lines": 3
+      },
+      "required_slots": [
+        "context-examples",
+        "pattern",
+        "guided-check"
+      ],
+      "overflow_action": "induction-then-summary-on-two-slides"
+    },
+    {
+      "id": "dialogue-four-turn",
+      "use_when": "四轮以内、人物清晰的短对话",
+      "source_evidence": [
+        {
+          "lesson": 4,
+          "slides": [
+            18,
+            32
+          ]
+        }
+      ],
+      "capacity": {
+        "max_turns": 4,
+        "max_hanzi_per_turn": 15
+      },
+      "required_slots": [
+        "speaker",
+        "dialogue-turns",
+        "student-instruction"
+      ],
+      "overflow_action": "split-dialogue"
+    },
+    {
+      "id": "quick-practice",
+      "use_when": "三图辨认、能力快问快答或日期快速识读",
+      "source_evidence": [
+        {
+          "lesson": 4,
+          "slides": [
+            14,
+            35
+          ]
+        }
+      ],
+      "capacity": {
+        "max_visual_items": 3,
+        "max_text_items": 12
+      },
+      "required_slots": [
+        "prompt-items",
+        "response-frame",
+        "student-instruction"
+      ],
+      "overflow_action": "split-into-two-rounds"
+    },
+    {
+      "id": "listening-choice",
+      "use_when": "教师朗读听力、选词或理解选择",
+      "source_evidence": [
+        {
+          "lesson": 4,
+          "slides": [
+            38
+          ]
+        }
+      ],
+      "capacity": {
+        "max_questions": 4,
+        "max_options": 5
+      },
+      "required_slots": [
+        "questions",
+        "equal-style-options",
+        "record-area"
+      ],
+      "overflow_action": "split-long-stems"
+    },
+    {
+      "id": "image-output",
+      "use_when": "两图补句、真实迁移或综合输出",
+      "source_evidence": [
+        {
+          "lesson": 4,
+          "slides": [
+            39,
+            40
+          ]
+        }
+      ],
+      "capacity": {
+        "max_visual_items": 2,
+        "max_prompt_lines": 2
+      },
+      "required_slots": [
+        "visual-prompt",
+        "output-frame",
+        "student-instruction"
+      ],
+      "overflow_action": "use-one-authentic-task-per-slide"
+    }
+  ],
+  "production_baseline": {
+    "lesson": 5,
+    "path": "D:\\textbook-ppt\\HSK1-5_教师版V3.3_主管意见吸收版_40页修订版.pptx",
+    "sha256": "8f2580a4e80a39149a4d7e57c4617a3194d4a433a017e0ba17bc0db679f5a95c",
+    "slide_count": 40,
+    "role": "supervisor-confirmed-notes-audience-layout-and-pedagogy-calibration"
+  },
+  "supervisor_feedback_loop": {
+    "authority": "supervisor-final-decision",
+    "workflow": [
+      "load-confirmed-rules-and-exceptions",
+      "generate-supervisor-review-pptx",
+      "receive-supervisor-feedback",
+      "classify-feedback",
+      "detect-conflicts-and-recurrence",
+      "request-supervisor-confirmation-when-needed",
+      "update-confirmed-rules-or-exceptions",
+      "apply-to-current-and-future-lessons",
+      "return-revised-pptx-for-supervisor-review"
+    ],
+    "feedback_classes": {
+      "page_specific": "直接修改当前页面，不自动扩大适用范围。",
+      "candidate_long_term_rule": "提炼为候选规则，只有主管确认后才写入稳定规则并用于后续课程。",
+      "exception": "保留既有规则，把当前情境登记为明确例外。",
+      "conflict": "主动列出旧规则、新意见、影响范围和处理选项，由主管决定保留、替换或设为例外。"
+    },
+    "rule_statuses": [
+      "candidate",
+      "confirmed",
+      "exception",
+      "superseded",
+      "rejected"
+    ],
+    "confirmation_fields": [
+      "supervisor_original_feedback",
+      "proposed_rule",
+      "scope",
+      "conflicting_rule",
+      "affected_lessons_and_slide_types",
+      "options",
+      "supervisor_decision"
+    ],
+    "activation_policy": "supervisor-confirmation-required",
+    "recurrence_policy": "已确认规则在后续课程蓝图阶段自动调用；同类问题再次出现时优先阻止复现并引用对应正反案例。",
+    "public_workflow_exclusions": [
+      "creator-self-check",
+      "independent-acceptance",
+      "validation-report-delivery"
+    ],
+    "delivery_authority": "主管复查并确认后定稿"
+  },
+  "exceptions": [
+    {
+      "feature": "source-slide-36-37-dense-dialogue",
+      "reason": "课文框拥挤且图片压字，只作为结构证据，目标课拆页或改用聊天气泡。"
+    },
+    {
+      "feature": "source-slide-28-31-repeated-silhouette",
+      "reason": "同构重复会造成节奏单调，每课最多选一至两页。"
+    },
+    {
+      "feature": "embedded-font-package",
+      "reason": "源文件嵌入字体异常大；输出保留版式身份但使用可移植字体，不继承无关字体负担。"
+    }
+  ]
+}
