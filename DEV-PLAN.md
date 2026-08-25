@@ -15,7 +15,7 @@
 | Phase | 内容 | 优先级 | 依赖 | 状态 |
 |---:|---|---|---|---|
 | 1 | 状态三方核对与合并 | P0 | — | [x] 已完成 2026-08-25 |
-| 2 | 状态回写至事实 | P0 | 1 | [ ] |
+| 2 | 状态回写至事实 | P0 | 1 | [x] 已完成 2026-08-25 |
 | 3 | SKILL 门禁增补 + 最小 QA 摘要 | P0 | 2 | [ ] |
 | 4 | 目录重构 | P1 | 2 | [ ] |
 | 5 | 可复现性 | P1 | 4 | [ ] |
@@ -52,21 +52,21 @@
 ## Phase 2: 状态回写至事实（P0 · REQ-002/004 数据基础）
 
 **交付内容**：
-- [ ] ledger 第 6–15 课按 Spec REQ-002 三字段约定回写：`lesson_status` 由 `queued` 改为 `review`，`machine_gate: pass`，`human_review: awaiting_teacher_review`；逐课登记最终文件名、页数、SHA-256；
-- [ ] 归一 ledger 中现存的枚举外取值到 SKILL §6 枚举，原语义转记 `human_review`：第 1 课 `outside_active_model`、第 2–4 课 `completed_by_teacher`、第 5 课 `completed_v3_2`；
-- [ ] 第 5 课登记项更正为 V3.3 40 页定稿——现有 `output` / `sha256` / `slides` 仍指向 V3.2 36 页版，MUST 覆盖；按 Spec REQ-004 口径记 `human_review: supervisor_confirmed`（主管确认，**不计入 accepted**）；历史版本链（V3.2/主管稿/39 页版）按现有说明文档归档记录；
-- [ ] 在 ledger 新建 REQ-004 门禁所需的判定字段：`batch_state`（`ladder_step`、`cap`、`accepted_count`、`awaiting_count`、`updated_at`）与 `exemptions[]`（`granted_by`、`granted_at`、`scope`、`reason`）；初值为 `accepted_count = 0`、`ladder_step = 1`、`cap = 1`、`awaiting_count = 10`、`exemptions = []`；
-- [ ] `production-state.json` 更新 phase、active_lesson、updated_at、latest_output、control_reference 至事实（现值为 `lesson_5_v3_2_calibrated_lesson_6_in_progress` / `active_lesson: 6`，均已过时）。
+- [x] ledger 第 6–15 课按 Spec REQ-002 三字段约定回写：`lesson_status` 由 `queued` 改为 `review`，`machine_gate: pass`，`human_review: awaiting_teacher_review`；逐课登记最终文件名、页数、SHA-256；
+- [x] 归一 ledger 中现存的枚举外取值到 SKILL §6 枚举：第 1–4 课（不在 `production_scope` 内的老师自有课件）归为 `final` + `human_review: none`，第 5 课归为 `review`；原取值 `outside_active_model` / `completed_by_teacher` / `completed_v3_2` 逐条留档于新增的 `legacy_status` 字段，不静默丢弃；
+- [x] 第 5 课登记项更正为 V3.3 40 页定稿——现有 `output` / `sha256` / `slides` 仍指向 V3.2 36 页版，MUST 覆盖；按 Spec REQ-004 口径记 `human_review: supervisor_confirmed`（主管确认，**不计入 accepted**）；历史版本链（V3.2/主管稿/39 页版）按现有说明文档归档记录；
+- [x] 在 ledger 新建 REQ-004 门禁所需的判定字段：`batch_state`（`ladder_step`、`cap`、`accepted_count`、`awaiting_count`、`updated_at`）与 `exemptions[]`（`granted_by`、`granted_at`、`scope`、`reason`）；初值为 `accepted_count = 0`、`ladder_step = 1`、`cap = 1`、`awaiting_count = 10`、`exemptions = []`；
+- [x] `production-state.json` 更新 phase、active_lesson、updated_at、latest_output、control_reference 至事实（现值为 `lesson_5_v3_2_calibrated_lesson_6_in_progress` / `active_lesson: 6`，均已过时）。
 
 **关键文件**：
 - `.tcsl-courseware/course-ledger.json` — lesson_status 归一 + machine_gate / human_review 双字段 + batch_state + exemptions
 - `.tcsl-courseware/production-state.json` — 现势状态
 
 **验收标准**：
-- [ ] ledger、HSK1-COURSEWARE-PROGRESS.md、`sha256sum` 实测三方完全一致（Spec REQ-002 AC-001）；
-- [ ] ledger 全部 15 条记录的 `lesson_status` 取值均落在 SKILL §6 枚举内，第 6–15 课 `human_review` 均为 `awaiting_teacher_review`（Spec REQ-002 AC-003）；
-- [ ] 读取 `batch_state` 得 `accepted_count = 0`、`ladder_step = 1`、`cap = 1`、`awaiting_count = 10`（Spec REQ-004 AC-002）；
-- [ ] 冷启动演练：不带口头交代的新 session 判断"下一步 = 等待老师审阅 / 可接新教材"，而非重产第 6 课（Spec REQ-002 AC-002）。
+- [x] ledger、HSK1-COURSEWARE-PROGRESS.md、`sha256sum` 实测三方完全一致（Spec REQ-002 AC-001）——11 课逐条核验通过；
+- [x] ledger 全部 15 条记录的 `lesson_status` 取值均落在 SKILL §6 枚举内，第 6–15 课 `human_review` 均为 `awaiting_teacher_review`（Spec REQ-002 AC-003）；
+- [x] 读取 `batch_state` 得 `accepted_count = 0`、`ladder_step = 1`、`cap = 1`、`awaiting_count = 10`（Spec REQ-004 AC-002）；
+- [x] 冷启动演练：不带口头交代的新 session 判断"下一步 = 等待老师审阅 / 可接新教材"，而非重产第 6 课（Spec REQ-002 AC-002）——记录见 `archive/2026-08-state-merge/phase2-coldstart-rehearsal.md`。
 
 ---
 

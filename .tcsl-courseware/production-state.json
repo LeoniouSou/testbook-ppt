@@ -2,11 +2,11 @@
   "schema_version": "3.0",
   "teacher_id": "teacher_hsk1_set_a",
   "course_id": "new_hsk_course_1",
-  "updated_at": "2026-08-20T00:12:00+08:00",
-  "phase": "lesson_5_v3_2_calibrated_lesson_6_in_progress",
+  "updated_at": "2026-08-25T23:49:08+08:00",
+  "phase": "lessons_6_to_15_delivered_awaiting_teacher_review",
   "model_status": "active_lessons_2_to_4_user_waived_lesson_1",
-  "active_lesson": 6,
-  "control_reference": "D:/textbook-ppt/HSK1-5_教师版V3.2备注优化版.pptx",
+  "active_lesson": null,
+  "control_reference": "HSK1-5_教师版V3.3_主管意见吸收版_40页修订版.pptx",
   "completed_work": [
     "Verified 142-page textbook and 15 lesson boundaries.",
     "Inspected all 81 slides in lessons 2-4, including notes, layout, fonts, images and editable structure.",
@@ -16,9 +16,13 @@
     "Authored and visually verified the 41-slide lesson 5 teacher PPTX.",
     "Added non-empty speaker notes to all 41 slides and complete exercise answers where applicable.",
     "Passed overflow and template-fidelity checks.",
-    "Calibrated the continuing-production baseline to the 36-slide lesson 5 V3.2 notes-optimized deck and upgraded the teacher model to courseware contract 3.2."
+    "Calibrated the continuing-production baseline to the 36-slide lesson 5 V3.2 notes-optimized deck and upgraded the teacher model to courseware contract 3.2.",
+    "Absorbed the teaching supervisor's final feedback on lesson 5 and produced the 40-slide V3.3 control template.",
+    "Authored, gated and independently signed off lessons 6-15: ten teacher PPTX files, 30 slides and 30 notes pages each, strict gate PASS with 0 errors and 0 warnings.",
+    "Reconciled the two forked state stores against the actual deliverables, archived .courseware/ and unified the state root on teacher_hsk1_set_a (DEV-PLAN Phase 1).",
+    "Wrote the ledger back to reality: lessons 6-15 moved from queued to review with machine_gate/human_review, lesson 5 re-registered against the V3.3 deck, batch_state and exemptions added (DEV-PLAN Phase 2)."
   ],
   "blocking_input": null,
-  "latest_output": "D:/textbook-ppt/HSK1-5_教师版V3.2备注优化版.pptx",
-  "next_action": "Use the frozen lessons 2-4 evidence and lesson 5 V3.2 control template to author and strictly validate lesson 6 without another onboarding round."
+  "latest_output": "HSK1-15_教师版.pptx",
+  "next_action": "Lessons 6-15 are delivered and awaiting teacher review; lesson 5 is supervisor-confirmed but not teacher-accepted. Do NOT re-produce any lesson. batch_state.accepted_count is 0, so the rolling-batch cap is 1 and no new finished lesson may be delivered until the teacher accepts one or the owner records an exemption in ledger.exemptions. Draft preparation and a new course or teacher onboarding remain allowed."
 }
